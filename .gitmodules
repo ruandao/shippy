@@ -1,0 +1,9 @@
+[submodule "user-service"]
+	path = user-service
+	url = git@github.com:ruandao/micro-shippy-user-service.git
+[submodule "consignment-service"]
+	path = consignment-service
+	url = git@github.com:ruandao/micro-shippy-consignment-service.git
+[submodule "vessel-service"]
+	path = vessel-service
+	url = git@github.com:ruandao/micro-shippy-vessel-service.git
