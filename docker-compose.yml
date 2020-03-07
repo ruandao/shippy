@@ -18,6 +18,7 @@ services:
       - database
     networks:
       - ser-network
+      - db-network
     environment:
       MICRO_ADDRESS: ":50051"
       DB_HOST: "database"
@@ -84,6 +85,8 @@ services:
     restart: always # ensures the container will restart on crash
     image: postgres
     container_name: x-postgres
+    networks:
+      - db-network
     ports:
       - 5432
     environment:
