@@ -1,19 +1,23 @@
 version: '3.5'
 
 services:
-  user-service-cli:
+  service-user-cli:
     build: ./user-service/cli
     container_name: x-user-cli
     depends_on:
-      - user-service
+      - service-user-ser
+    networks:
+      - ser-network
 
-  user-service:
+  service-user-ser:
     build: ./user-service/ser
     container_name: x-user-service
     ports:
       - 50053:50051
     depends_on:
       - database
+    networks:
+      - ser-network
     environment:
       MICRO_ADDRESS: ":50051"
       DB_HOST: "database"
@@ -22,15 +26,15 @@ services:
       DB_USER: "postgres"
       DB_PASSWORD: "postgres_password"
 
-  consignment-cli:
+  service-consignment-cli:
     build: ./consignment-service/cli
     container_name: x-cli-consignment
     networks:
       - ser-network
     depends_on:
-      - shippy-service-consignment
+      - service-consignment-ser
 
-  shippy-service-consignment:
+  service-consignment-ser:
     restart: always # ensures the container will restart on crash
     container_name: "shippy-service-consignment"
     build: ./consignment-service/ser
@@ -38,7 +42,7 @@ services:
       - 50051 # exposing this port on the docker network only, not host
     depends_on:
       - datastore
-      - shippy-service-vessel
+      - service-vessel-ser
     networks:
       - db-network
       - ser-network
@@ -46,7 +50,7 @@ services:
       DB_HOST: "mongodb://datastore:27017"
       MICRO_ADDRESS: ":50051"
 
-  shippy-service-vessel:
+  service-vessel-ser:
     restart: always
     container_name: "shippy-service-vessel"
     build: ./vessel-service
